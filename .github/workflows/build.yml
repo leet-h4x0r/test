@@ -4,15 +4,20 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4 # Gets your code
+
+      - name: Set up Python
+        uses: actions/setup-python@v5 # v5 is the current stable version
         with:
           python-version: '3.8'
-      - name: Build
+
+      - name: Build Wheel
         run: |
           pip install wheel
-          pip wheel lanms-neo==1.0.2
-      - name: Upload
-        uses: actions/upload-artifact@v3
+          pip wheel lanms-neo==1.0.2 --wheel-dir=dist
+
+      - name: Upload Finished Wheel
+        uses: actions/upload-artifact@v4 # v4 fixes the error you saw
         with:
-          name: windows-wheel
-          path: ./*.whl
+          name: windows-wheel-py38
+          path: dist/*.whl
